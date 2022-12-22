@@ -3,15 +3,13 @@ package com.sedlarski.pathfinder.web;
 import com.sedlarski.pathfinder.model.binding.UserLoginBM;
 import com.sedlarski.pathfinder.model.binding.UserRegisterBM;
 import com.sedlarski.pathfinder.model.service.UserServiceModel;
+import com.sedlarski.pathfinder.model.view.UserVM;
 import com.sedlarski.pathfinder.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -88,5 +86,12 @@ public class UserController {
 
         userService.loginUser(user);
         return "redirect:/";
+    }
+
+    @GetMapping("/profile/{id}")
+    public String profile(@PathVariable Long id, Model model) {
+        UserVM user = modelMapper.map(userService.findById(id), UserVM.class);
+        model.addAttribute("user", user);
+        return "profile";
     }
 }
