@@ -60,4 +60,9 @@ public class UserServiceImpl implements UserService{
     public boolean isLogged() {
         return currentUser.getId() != null;
     }
+
+    @Override
+    public User findUserEntity() {
+        return userRepository.findById(currentUser.getId()).orElse(null);
+    }
 }

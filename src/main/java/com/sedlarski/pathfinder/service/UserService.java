@@ -1,5 +1,6 @@
 package com.sedlarski.pathfinder.service;
 
+import com.sedlarski.pathfinder.model.entity.User;
 import com.sedlarski.pathfinder.model.service.UserServiceModel;
 
 public interface UserService {
@@ -9,4 +10,6 @@ public interface UserService {
     UserServiceModel findById(Long id);
     void logout();
     boolean isLogged();
+
+    User findUserEntity();
 }

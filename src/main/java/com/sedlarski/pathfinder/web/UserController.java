@@ -66,4 +66,27 @@ public class UserController {
         model.addAttribute("isExists", true);
         return "login";
     }
+
+    @PostMapping("/login")
+    public String loginPost(@Valid UserLoginBM userLoginBM,
+                            BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userLoginBM", userLoginBM);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBM", bindingResult);
+            return "redirect:login";
+        }
+
+        UserServiceModel user = userService.findByUsernameAndPassword(userLoginBM.getUsername(), userLoginBM.getPassword());
+        if(user == null) {
+            redirectAttributes
+                    .addAttribute("isExists", false)
+                    .addAttribute("userLoginBM", userLoginBM)
+                    .addAttribute("org.springframework.validation.BindingResult.userLoginBM", bindingResult);
+
+            return "redirect:login";
+        }
+
+        userService.loginUser(user);
+        return "redirect:/";
+    }
 }
